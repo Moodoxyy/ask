@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hey there! 👋</title>
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffd1ff, #e8d4ff);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            text-align: center;
+            padding: 2.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 500px;
+            transform-origin: center;
+            animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            color: #ff4b8d;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        .emoji {
+            font-size: 3rem;
+            margin: 1rem 0;
+            animation: wave 2s infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-20deg); }
+            75% { transform: rotate(20deg); }
+        }
+
+        .buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-yes {
+            background: linear-gradient(45deg, #ff4b8d, #ff6b6b);
+            color: white;
+            animation: pulse 2s infinite;
+            box-shadow: 0 5px 15px rgba(255, 75, 141, 0.3);
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.1);
+        }
+
+        .btn-no {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .falling {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+            font-size: 24px;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="emoji">👋</div>
+        <h1>Hey! Quick question...</h1>
+        <div style="font-size: 1.3rem; color: #666;">
+            Coffee date? ☕️
+        </div>
+        <div class="buttons">
+            <button class="btn btn-yes" onclick="sayYes()">Yes! 😊</button>
+            <button class="btn btn-no" onmouseover="moveButton(this)">Nah</button>
+        </div>
+    </div>
+
+    <script>
+        const emojis = ['✨', '💫', '⭐️', '💝', '🌟', '💫', '⚡️', '💖'];
+        
+        function createFallingElement() {
+            const element = document.createElement('div');
+            element.className = 'falling';
+            element.style.left = Math.random() * 100 + 'vw';
+            element.style.position = 'fixed';
+            element.style.top = '-20px';
+            element.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            const duration = Math.random() * 2 + 3;
+            element.style.animation = `fall ${duration}s linear`;
+            
+            document.body.appendChild(element);
+            
+            element.addEventListener('animationend', () => {
+                element.remove();
+            });
+        }
+
+        function moveButton(button) {
+            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+            
+            const newX = Math.random() * (vw - 100);
+            const newY = Math.random() * (vh - 100);
+            
+            button.style.position = 'absolute';
+            button.style.left = newX + 'px';
+            button.style.top = newY + 'px';
+        }
+
+        function sayYes() {
+            const container = document.querySelector('.container');
+            container.innerHTML = `
+                <div class="emoji">🎉</div>
+                <h1>Awesome!</h1>
+                <div style="font-size: 1.3rem; color: #666;">
+                    Can't wait! ✨
+                </div>
+            `;
+            
+            setInterval(createFallingElement, 100);
+        }
+    </script>
+</body>
+</html>
